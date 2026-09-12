@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-marka-50: #fdf8ed;
+  --color-marka-100: #faeed0;
+  --color-marka-200: #f4dca1;
+  --color-marka-300: #edc46a;
+  --color-marka-400: #e6ab3c;
+  --color-marka-500: #d69e2e;
+  --color-marka-600: #b87d1f;
+  --color-marka-700: #955f1c;
+  --color-marka-800: #7a4d1e;
+  --color-marka-900: #67411d;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-slate-100 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+    /* Depoda telefonla kullanım: gövde metni biraz daha büyük */
+    font-size: 15px;
+    overscroll-behavior-y: none;
+  }
+
+  /* Sayısal alanlarda okçuları gizle (mobilde yanlışlıkla artırmayı önler) */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-marka-500;
+  }
+}
+
+@utility guvenli-alt {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility guvenli-ust {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Sayı girişlerinde binlik ayraçlı okuma kolaylığı */
+@utility sayi {
+  font-variant-numeric: tabular-nums;
+}

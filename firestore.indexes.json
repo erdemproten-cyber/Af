@@ -1,0 +1,30 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "siparisler",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "arsiv", "order": "ASCENDING" },
+        { "fieldPath": "siparisTarihi", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "siparisler",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "arsiv", "order": "ASCENDING" },
+        { "fieldPath": "durum", "order": "ASCENDING" },
+        { "fieldPath": "siparisTarihi", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "uretimler",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "parfumNo", "order": "ASCENDING" },
+        { "fieldPath": "demlenmeBitis", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

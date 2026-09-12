@@ -1,0 +1,61 @@
+rules_version = '2';
+
+// Parfüm Takip — Firestore güvenlik kuralları
+//
+// Tek kullanıcılı uygulama: tüm veriler users/{uid}/... altında tutulur ve
+// yalnızca o uid ile oturum açmış kullanıcı okuyup yazabilir.
+// Test moduna ASLA geri dönme; son satırdaki kural varsayılan olarak her şeyi reddeder.
+//
+// Not: Firestore kuralları birleşiktir (OR) — eşleşen herhangi bir kural izin
+// veriyorsa erişim açılır. Bu yüzden koleksiyonlar `{belge=**}` ile toplu değil,
+// tek tek eşleştirilir; aksi halde shopier_raw için yazma yasağı etkisiz kalırdı.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function sahibi(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      // Kullanıcı kök belgesi
+      allow read, write: if sahibi(uid);
+
+      // Parfüm kataloğu (1–500 numara)
+      match /katalog/{urunId} {
+        allow read, write: if sahibi(uid);
+      }
+
+      // Üretim partileri — envanterin kalbi
+      match /uretimler/{uretimId} {
+        allow read, write: if sahibi(uid);
+      }
+
+      // Siparişler (arşiv dahil; `arsiv` alanıyla filtrelenir)
+      match /siparisler/{siparisId} {
+        allow read, write: if sahibi(uid);
+      }
+
+      // Esans sözlüğü (otomatik tamamlama)
+      match /esanslar/{esansId} {
+        allow read, write: if sahibi(uid);
+      }
+
+      // Ayarlar ve sayaçlar
+      match /meta/{belgeId} {
+        allow read, write: if sahibi(uid);
+      }
+
+      // Shopier webhook ham kayıtları: yalnızca Cloud Function (Admin SDK) yazar
+      // — Admin SDK kuralları atlar. İstemci sadece okuyabilir, silemez/yazamaz.
+      match /shopier_raw/{kayitId} {
+        allow read: if sahibi(uid);
+        allow write: if false;
+      }
+    }
+
+    // Diğer her şey kapalı.
+    match /{belge=**} {
+      allow read, write: if false;
+    }
+  }
+}
