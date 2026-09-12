@@ -24,7 +24,20 @@ const ayar: FirebaseOptions = {
 /** .env dosyası doldurulmadıysa arayüzde anlaşılır bir uyarı gösterebilmek için. */
 export const firebaseYapilandirildi = Boolean(ayar.apiKey && ayar.projectId)
 
-export const app = initializeApp(ayar)
+/**
+ * Yapılandırma eksikse SDK yer tutucu değerlerle başlatılır.
+ * Aksi halde `getAuth` modül yüklenirken `auth/invalid-api-key` fırlatır ve
+ * kullanıcı bomboş bir sayfa görür; bu şekilde giriş ekranındaki
+ * "Firebase yapılandırması eksik" uyarısı görünebilir.
+ */
+const YER_TUTUCU: FirebaseOptions = {
+  apiKey: 'yapilandirilmamis',
+  authDomain: 'yapilandirilmamis.firebaseapp.com',
+  projectId: 'yapilandirilmamis',
+  appId: '1:0:web:yapilandirilmamis',
+}
+
+export const app = initializeApp(firebaseYapilandirildi ? ayar : YER_TUTUCU)
 
 export const auth = getAuth(app)
 

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { describe, test } from 'vitest'
 import { Timestamp } from 'firebase/firestore'
 
-import { dusumPlaniHesapla, siparisDusumPlani } from '../src/services/stok'
+import { dusumPlaniHesapla, siparisDusumPlani } from '../src/lib/stokPlani'
 import { demlenmeDurumu, stokOzeti } from '../src/lib/demlenme'
 import { csvCoz, csvNesneler, csvYaz, sayiyaCevir } from '../src/lib/csv'
 import { aramaMetni, koddanNo, telefonNormalize, telefonGoster, urunKodu } from '../src/lib/format'
